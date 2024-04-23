@@ -1,10 +1,11 @@
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, Alert } from 'react-native'
 import { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+import { createUser } from '../../lib/appwrite';
 
 
 const SignUp = () => {
@@ -13,8 +14,26 @@ const SignUp = () => {
     email: '',
     password: '',
   });
-  const submit = () => { }
+  const { setUser, setIsLoggedIn } = useGlobalContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const submit = async () => {
+    if(!form.username === "" || !form.email === "" || !form.password === "") {
+      Alert.alert('Error', 'Please fill all fields are required');
+    }
+    setIsSubmitting(true);
+
+    try { 
+      const result = await createUser(form.email, form.password, form.username);  //set to global state
+      setUser(result); //set to global state
+      setIsLoggedIn(true); //set to global state
+      router.replace('/home');
+    }
+    catch (error) {
+      Alert.alert('Error', error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+   }
   return (
     <SafeAreaView className='bg-primary h-full'>
       <ScrollView>
@@ -27,13 +46,13 @@ const SignUp = () => {
             value={form.username}
             handleChangeText={(e) => setForm({ ...form, username: e })}
             otherStyles='mt-10'
-            keyboardType='email-address'
           />
           <FormField
             title='Email'
             value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e })}
             otherStyles='mt-6'
+            keyboardType='email-address'
           />
           <FormField
             title='Password'
@@ -41,7 +60,7 @@ const SignUp = () => {
             handleChangeText={(e) => setForm({ ...form, password: e })}
             otherStyles='mt-6'
           />
-          <CustomButton title='Sign up'
+          <CustomButton title='Sign Up'
             handlePress={submit}
             containerStyles='mt-6'
             isLoading={isSubmitting}
