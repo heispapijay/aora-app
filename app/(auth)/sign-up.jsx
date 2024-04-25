@@ -44,12 +44,14 @@ const SignUp = () => {
           <Text className="text-white text-2xl font-psemibold text-semibold mt-10 ">Sign up to Aora</Text>
           <FormField
             title='Username'
+            placeholder="Enter your username..."
             value={form.username}
             handleChangeText={(e) => setForm({ ...form, username: e })}
             otherStyles='mt-10'
           />
           <FormField
             title='Email'
+            placeholder="Enter your email address..."
             value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e })}
             otherStyles='mt-6'
@@ -57,6 +59,7 @@ const SignUp = () => {
           />
           <FormField
             title='Password'
+            placeholder='Enter your password...'
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
             otherStyles='mt-6'

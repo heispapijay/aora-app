@@ -47,12 +47,14 @@ const SignIn = () => {
           <FormField
             title='Email'
             value={form.email}
+            placeholder="Enter your email address..."
             handleChangeText={(e) => setForm({ ...form, email: e })}
             otherStyles='mt-6'
             keyboardType='email-address'
           />
           <FormField
             title='Password'
+            placeholder='Enter your password...'
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
             otherStyles='mt-6'
